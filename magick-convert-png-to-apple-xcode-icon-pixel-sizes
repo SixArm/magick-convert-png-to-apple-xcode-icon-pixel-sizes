@@ -1,0 +1,45 @@
+#!/bin/sh
+
+##
+# Use ImageMagick `magick convert` command to resize an image to
+# all the typical Apple Xcode icon pixel sizes.
+#
+# Syntax:
+#
+#     magick-convert-png-to-apple-xcode-icon-pixel-sizes <input-file> [output-file-base]
+#
+# Example:
+#
+#     magick-convert-png-to-apple-xcode-icon-pixel-sizes foo.png
+#     => outputs a bunch of new files
+#     foo-20x20.png
+#     foo-29x29.png
+#     foo-40x40.png
+#     …
+#
+# Example with output file base name:
+#
+#     magick-convert-png-to-apple-xcode-icon-pixel-sizes foo.png bar
+#     => outputs a bunch of new files
+#     bar-20x20.png
+#     bar-29x29.png
+#     bar-40x40.png
+#     …
+#
+# ## Tracking
+#
+#   * Command: magick-convert-png-to-apple-xcode-icon-pixel-sizes
+#   * Version: 1.0.0
+#   * Created: 2020-12-01
+#   * Updated: 2020-12-07
+#   * License: GPL-2
+#   * Contact: Joel Parker Henderson (joel@joelparkerhenderson.com)
+##
+
+input_file="$1"
+output_file_base="${2:-${1/.png/}}"
+for pixels in 20 29 40 58 60 76 80 87 120 152 167 180 1024; do
+	output_file="${output_file_base}-${pixels}x${pixels}.png"
+	echo "$input_file $output_file"
+	magick convert "$input_file" -resize "${pixels}x${pixels}" "$output_file"
+done
